@@ -71,7 +71,7 @@ Deploy in seconds with zero configuration:
 1. Visit [fastmcp.cloud](https://fastmcp.cloud) and sign in with GitHub
 2. Create a project from `jhigh1594/agileplace-mcp-server`
 3. Configure:
-   - **Entrypoint**: `src/server.py:mcp`
+   - **Entrypoint**: `agileplace_mcp/server.py:mcp`
    - **Environment Variables**: `AGILEPLACE_DOMAIN`, `AGILEPLACE_API_TOKEN`
 4. Your server is live at `https://your-project-name.fastmcp.app/mcp`
 

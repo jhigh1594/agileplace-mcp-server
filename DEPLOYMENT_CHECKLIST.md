@@ -15,7 +15,7 @@ Use this checklist to deploy the AgilePlace MCP Server to FastMCP Cloud.
 
 | Setting | Value | Status |
 |---------|-------|--------|
-| **Entrypoint** | `src/server.py:mcp` | ✅ Configured |
+| **Entrypoint** | `agileplace_mcp/server.py:mcp` | ✅ Configured |
 | **FastMCP Version** | `>=0.1.0` | ✅ Compatible |
 | **Python Version** | `>=3.10` | ✅ Compatible |
 | **Dependencies** | `requirements.txt` | ✅ Available |

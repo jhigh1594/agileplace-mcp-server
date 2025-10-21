@@ -55,7 +55,7 @@ Choose a unique name for your project (e.g., `agileplace-prod`)
 
 #### **Entrypoint**
 ```
-src/server.py:mcp
+agileplace_mcp/server.py:mcp
 ```
 This tells FastMCP Cloud:
 - File: `src/server.py`
@@ -141,7 +141,7 @@ Before deploying, you can inspect your server locally:
 pip install fastmcp
 
 # Inspect your server configuration
-fastmcp inspect src/server.py:mcp
+fastmcp inspect agileplace_mcp/server.py:mcp
 ```
 
 This shows exactly what FastMCP Cloud will see when it runs your server.
@@ -186,7 +186,7 @@ In FastMCP Cloud:
 
 ### "Module not found"
 - Ensure all dependencies are listed in `requirements.txt`
-- Check that the entrypoint path is correct: `src/server.py:mcp`
+- Check that the entrypoint path is correct: `agileplace_mcp/server.py:mcp`
 - Verify the project structure matches the repository
 
 ## Development Workflow
