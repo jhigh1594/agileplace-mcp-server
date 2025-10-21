@@ -1,0 +1,43 @@
+# FastMCP Cloud Configuration
+# This file documents the recommended configuration for FastMCP Cloud deployment
+
+[project]
+# Recommended project name (user can change this)
+name = "agileplace"
+
+# Required: Python file and FastMCP object
+entrypoint = "src/server.py:mcp"
+
+# Required: Environment variables
+# Set these in FastMCP Cloud project settings
+required_env = [
+    "AGILEPLACE_DOMAIN",
+    "AGILEPLACE_API_TOKEN"
+]
+
+# Optional: Environment variables
+optional_env = [
+    "LOG_LEVEL"
+]
+
+[dependencies]
+# Dependencies will be auto-detected from:
+# - requirements.txt (recommended for FastMCP Cloud)
+# - pyproject.toml
+source = "requirements.txt"
+
+[features]
+# Supports automatic redeployment on push to main
+auto_deploy = true
+
+# Supports PR preview URLs
+pr_previews = true
+
+# Compatible with FastMCP Cloud authentication
+authentication = true
+
+[metadata]
+description = "MCP server for AgilePlace API integration with 40+ tools"
+python_version = ">=3.10"
+fastmcp_version = ">=0.1.0"
+
