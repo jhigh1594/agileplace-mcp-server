@@ -33,7 +33,7 @@ Get up and running with the AgilePlace MCP Server in 5 minutes!
 4. Select repository: `jhigh1594/agileplace-mcp-server`
 5. Configure:
    - **Name**: `agileplace` (or your choice)
-   - **Entrypoint**: `agileplace_mcp/server.py:mcp`
+   - **Entrypoint**: `server.py:mcp`
    - **Environment Variables**:
      - `AGILEPLACE_DOMAIN`: `your-subdomain.leankit.com`
      - `AGILEPLACE_API_TOKEN`: *paste your token*

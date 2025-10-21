@@ -6,7 +6,7 @@
 name = "agileplace"
 
 # Required: Python file and FastMCP object
-entrypoint = "agileplace_mcp/server.py:mcp"
+entrypoint = "server.py:mcp"
 
 # Required: Environment variables
 # Set these in FastMCP Cloud project settings
