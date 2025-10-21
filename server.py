@@ -113,7 +113,7 @@ async def get_board(board_id: str) -> dict:
 @mcp.tool()
 async def get_board_cards(
     board_id: str,
-    lanes: Optional[list[str]] = None,
+    lanes_json: Optional[str] = None,
     limit: int = 200,
 ) -> dict:
     """
@@ -121,12 +121,16 @@ async def get_board_cards(
     
     Args:
         board_id: ID of the board
-        lanes: List of lane IDs to filter by (optional)
+        lanes_json: JSON string with list of lane IDs to filter by (optional)
         limit: Maximum number of cards to return (default: 200)
     """
     try:
+        import json
+        lanes = json.loads(lanes_json) if lanes_json else None
         client = get_client()
         return await boards.get_board_cards(client, board_id, lanes, limit=limit)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format for lanes: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -252,7 +256,7 @@ async def create_card(
     description: Optional[str] = None,
     priority: Optional[str] = None,
     size: Optional[int] = None,
-    tags: Optional[list[str]] = None,
+    tags_json: Optional[str] = None,
 ) -> dict:
     """
     Create a new card on a board.
@@ -264,9 +268,11 @@ async def create_card(
         description: Card description (optional)
         priority: Priority level - 'low', 'normal', 'high', or 'critical' (optional)
         size: Card size (optional)
-        tags: List of tags (optional)
+        tags_json: JSON string with list of tags (optional)
     """
     try:
+        import json
+        tags = json.loads(tags_json) if tags_json else None
         client = get_client()
         return await cards.create_card(
             client,
@@ -278,6 +284,8 @@ async def create_card(
             size=size,
             tags=tags,
         )
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format for tags: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -289,7 +297,7 @@ async def update_card(
     description: Optional[str] = None,
     priority: Optional[str] = None,
     size: Optional[int] = None,
-    tags: Optional[list[str]] = None,
+    tags_json: Optional[str] = None,
     lane_id: Optional[str] = None,
     position: Optional[int] = None,
 ) -> dict:
@@ -302,11 +310,12 @@ async def update_card(
         description: New card description (optional)
         priority: New priority level - 'low', 'normal', 'high', or 'critical' (optional)
         size: New card size (optional)
-        tags: New list of tags (optional)
+        tags_json: JSON string with new list of tags (optional)
         lane_id: Move to different lane (optional)
         position: Position in lane (optional)
     """
     try:
+        import json
         client = get_client()
         # Build updates dict from provided parameters
         updates = {}
@@ -318,7 +327,8 @@ async def update_card(
             updates["priority"] = priority
         if size is not None:
             updates["size"] = size
-        if tags is not None:
+        if tags_json is not None:
+            tags = json.loads(tags_json)
             updates["tags"] = tags
         if lane_id is not None:
             updates["lane_id"] = lane_id
@@ -326,6 +336,8 @@ async def update_card(
             updates["position"] = position
             
         return await cards.update_card(client, card_id, **updates)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format for tags: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -401,20 +413,25 @@ async def create_comment(card_id: str, text: str) -> dict:
 @mcp.tool()
 async def assign_users_to_card(
     card_id: str,
-    user_ids: Optional[list[str]] = None,
-    team_ids: Optional[list[str]] = None,
+    user_ids_json: Optional[str] = None,
+    team_ids_json: Optional[str] = None,
 ) -> dict:
     """
     Assign users and/or teams to a card.
     
     Args:
         card_id: ID of the card
-        user_ids: List of user IDs to assign (optional)
-        team_ids: List of team IDs to assign (optional)
+        user_ids_json: JSON string with list of user IDs to assign (optional)
+        team_ids_json: JSON string with list of team IDs to assign (optional)
     """
     try:
+        import json
+        user_ids = json.loads(user_ids_json) if user_ids_json else None
+        team_ids = json.loads(team_ids_json) if team_ids_json else None
         client = get_client()
         return await cards.assign_users_to_card(client, card_id, user_ids, team_ids)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -504,16 +521,21 @@ async def get_connection_statistics(card_id: str) -> dict:
 
 
 @mcp.tool()
-async def connect_cards_bulk(connections_list: list[dict]) -> dict:
+async def connect_cards_bulk(connections_json: str) -> dict:
     """
     Create multiple parent-child connections in a single request.
     
     Args:
-        connections_list: List of dicts with 'parentCardId' and 'childCardId'
+        connections_json: JSON string with list of connections
+                        [{"parentCardId": "123", "childCardId": "456"}]
     """
     try:
+        import json
+        connections_list = json.loads(connections_json)
         client = get_client()
         return await connections.connect_cards_bulk(client, connections_list)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -657,17 +679,22 @@ async def get_team(team_id: str) -> dict:
 # ========================================
 
 @mcp.tool()
-async def update_cards_bulk(card_ids: list[str], updates: dict[str, Any]) -> dict:
+async def update_cards_bulk(card_ids_json: str, updates_json: str) -> dict:
     """
     Update multiple cards with the same field values.
     
     Args:
-        card_ids: List of card IDs to update (max 100)
-        updates: Dictionary of fields to update on all cards
+        card_ids_json: JSON string with list of card IDs to update (max 100)
+        updates_json: JSON string with dictionary of fields to update
     """
     try:
+        import json
+        card_ids = json.loads(card_ids_json)
+        updates = json.loads(updates_json)
         client = get_client()
         return await bulk.update_cards_bulk(client, card_ids, updates)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
@@ -689,40 +716,51 @@ async def delete_cards_bulk(card_ids: list[str]) -> str:
 
 
 @mcp.tool()
-async def move_cards_bulk(moves: list[dict]) -> dict:
+async def move_cards_bulk(moves_json: str) -> dict:
     """
     Move multiple cards to different lanes in a single request.
     
     Args:
-        moves: List of move operations with 'cardId', 'laneId', and optional 'position'
+        moves_json: JSON string with list of move operations
+                   [{"cardId": "123", "laneId": "456", "position": 1}]
     """
     try:
+        import json
+        moves = json.loads(moves_json)
         client = get_client()
         return await bulk.move_cards_bulk(client, moves)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
 
 @mcp.tool()
 async def assign_members_bulk(
-    board_ids: list[str],
-    user_ids: Optional[list[str]] = None,
-    team_ids: Optional[list[str]] = None,
+    board_ids_json: str,
+    user_ids_json: Optional[str] = None,
+    team_ids_json: Optional[str] = None,
     board_role: str = "boardUser",
 ) -> str:
     """
     Assign users or teams to multiple boards with a specific role.
     
     Args:
-        board_ids: List of board IDs
-        user_ids: List of user IDs to assign (optional)
-        team_ids: List of team IDs to assign (optional)
+        board_ids_json: JSON string with list of board IDs
+        user_ids_json: JSON string with list of user IDs to assign (optional)
+        team_ids_json: JSON string with list of team IDs to assign (optional)
         board_role: Role to assign - 'boardReader', 'boardUser', 'boardManager', 'boardAdministrator'
     """
     try:
+        import json
+        board_ids = json.loads(board_ids_json)
+        user_ids = json.loads(user_ids_json) if user_ids_json else None
+        team_ids = json.loads(team_ids_json) if team_ids_json else None
         client = get_client()
         await bulk.assign_members_bulk(client, board_ids, user_ids, team_ids, board_role)
         return "Successfully assigned members to boards"
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
     except Exception as e:
         raise ValueError(handle_api_error(e))
 
