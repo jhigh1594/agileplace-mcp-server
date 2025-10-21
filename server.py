@@ -283,16 +283,48 @@ async def create_card(
 
 
 @mcp.tool()
-async def update_card(card_id: str, **updates: Any) -> dict:
+async def update_card(
+    card_id: str,
+    title: Optional[str] = None,
+    description: Optional[str] = None,
+    priority: Optional[str] = None,
+    size: Optional[int] = None,
+    tags: Optional[list[str]] = None,
+    lane_id: Optional[str] = None,
+    position: Optional[int] = None,
+) -> dict:
     """
     Update fields on an existing card.
     
     Args:
         card_id: ID of the card to update
-        **updates: Field updates (title, description, priority, size, tags, etc.)
+        title: New card title (optional)
+        description: New card description (optional)
+        priority: New priority level - 'low', 'normal', 'high', or 'critical' (optional)
+        size: New card size (optional)
+        tags: New list of tags (optional)
+        lane_id: Move to different lane (optional)
+        position: Position in lane (optional)
     """
     try:
         client = get_client()
+        # Build updates dict from provided parameters
+        updates = {}
+        if title is not None:
+            updates["title"] = title
+        if description is not None:
+            updates["description"] = description
+        if priority is not None:
+            updates["priority"] = priority
+        if size is not None:
+            updates["size"] = size
+        if tags is not None:
+            updates["tags"] = tags
+        if lane_id is not None:
+            updates["lane_id"] = lane_id
+        if position is not None:
+            updates["position"] = position
+            
         return await cards.update_card(client, card_id, **updates)
     except Exception as e:
         raise ValueError(handle_api_error(e))
