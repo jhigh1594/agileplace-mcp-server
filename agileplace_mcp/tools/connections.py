@@ -10,6 +10,8 @@ async def get_card_children(
     card_id: str,
     limit: int = 200,
     offset: int = 0,
+    board_id: Optional[str] = None,
+    card_status: Optional[str] = None,
 ) -> dict:
     """
     Get child cards connected to a parent card.
@@ -19,12 +21,14 @@ async def get_card_children(
         card_id: ID of the parent card
         limit: Maximum number of children to return (default: 200)
         offset: Number of children to skip (default: 0)
+        board_id: Limit results to specific board (optional)
+        card_status: Filter by card status - 'notStarted', 'started', 'finished' (optional)
 
     Returns:
         Dictionary with 'cards' list and 'pageMeta'
 
     Example:
-        result = await get_card_children(client, "123456")
+        result = await get_card_children(client, "123456", card_status="notStarted,started")
         for child in result['cards']:
             print(f"Child: {child['title']}")
     """
@@ -32,7 +36,13 @@ async def get_card_children(
         "limit": limit,
         "offset": offset,
     }
-    response = await client.get(f"/card/{card_id}/children", params=params)
+    
+    if board_id:
+        params["boardId"] = board_id
+    
+    if card_status:
+        params["cardStatus"] = card_status
+    response = await client.get(f"/card/{card_id}/connection/children", params=params)
     return response
 
 
@@ -51,8 +61,8 @@ async def get_card_children_ids(client: AgilePlaceClient, card_id: str) -> list[
         child_ids = await get_card_children_ids(client, "123456")
         print(f"Number of children: {len(child_ids)}")
     """
-    response = await client.get(f"/card/{card_id}/children/ids")
-    return response.get("childCardIds", [])
+    response = await client.get(f"/card/{card_id}/connection/children/ids")
+    return response.get("ids", [])
 
 
 async def get_card_parents(
@@ -60,6 +70,7 @@ async def get_card_parents(
     card_id: str,
     limit: int = 200,
     offset: int = 0,
+    board: Optional[str] = None,
 ) -> dict:
     """
     Get parent cards connected to a child card.
@@ -69,12 +80,13 @@ async def get_card_parents(
         card_id: ID of the child card
         limit: Maximum number of parents to return (default: 200)
         offset: Number of parents to skip (default: 0)
+        board: Limit results to specific board (optional)
 
     Returns:
         Dictionary with 'cards' list and 'pageMeta'
 
     Example:
-        result = await get_card_parents(client, "123456")
+        result = await get_card_parents(client, "123456", board="board123")
         for parent in result['cards']:
             print(f"Parent: {parent['title']}")
     """
@@ -82,7 +94,10 @@ async def get_card_parents(
         "limit": limit,
         "offset": offset,
     }
-    response = await client.get(f"/card/{card_id}/parents", params=params)
+    
+    if board:
+        params["board"] = board
+    response = await client.get(f"/card/{card_id}/connection/parents", params=params)
     return response
 
 
@@ -103,7 +118,7 @@ async def get_connection_statistics(client: AgilePlaceClient, card_id: str) -> d
         stats = await get_connection_statistics(client, "123456")
         print(f"Total: {stats['totalCount']}, Completed: {stats['completedCount']}")
     """
-    response = await client.get(f"/card/{card_id}/connectedCardStatistics")
+    response = await client.get(f"/card/{card_id}/statistics")
     return response
 
 
@@ -127,10 +142,12 @@ async def create_connection(
         connection = await create_connection(client, "parent123", "child456")
     """
     payload = {
-        "parentCardId": parent_id,
-        "childCardId": child_id,
+        "cardIds": [parent_id],
+        "connections": {
+            "children": [child_id]
+        }
     }
-    response = await client.post("/card/connection", json=payload)
+    response = await client.post("/card/connections", json=payload)
     return response
 
 
@@ -151,57 +168,66 @@ async def delete_connection(
         await delete_connection(client, "parent123", "child456")
     """
     payload = {
-        "parentCardId": parent_id,
-        "childCardId": child_id,
+        "cardIds": [parent_id],
+        "connections": {
+            "children": [child_id]
+        }
     }
-    await client.post("/card/deleteConnection", json=payload)
+    await client.delete("/card/connections", json=payload)
 
 
 async def connect_cards_bulk(
     client: AgilePlaceClient,
-    connections: list[dict],
+    card_connections: dict,
 ) -> dict:
     """
-    Create multiple parent-child connections in a single request.
+    Create multiple parent-child connections in a single request using modern API.
 
     Args:
         client: AgilePlace API client
-        connections: List of connection dictionaries with 'parentCardId' and 'childCardId'
+        card_connections: Dictionary with 'cardIds' and 'connections' structure:
+            - cardIds: list[str] - parent card IDs
+            - connections: dict with 'children' and/or 'parents' lists
 
     Returns:
         Dictionary with created connections
 
     Example:
-        connections = [
-            {"parentCardId": "parent1", "childCardId": "child1"},
-            {"parentCardId": "parent1", "childCardId": "child2"},
-            {"parentCardId": "parent2", "childCardId": "child3"},
-        ]
+        connections = {
+            "cardIds": ["parent1", "parent2"],
+            "connections": {
+                "children": ["child1", "child2", "child3"]
+            }
+        }
         result = await connect_cards_bulk(client, connections)
     """
-    response = await client.post("/card/connectMany", json={"connections": connections})
+    response = await client.post("/card/connections", json=card_connections)
     return response
 
 
 async def delete_connections_bulk(
     client: AgilePlaceClient,
-    connections: list[dict],
+    card_connections: dict,
 ) -> None:
     """
-    Delete multiple parent-child connections in a single request.
+    Delete multiple parent-child connections in a single request using modern API.
 
     Args:
         client: AgilePlace API client
-        connections: List of connection dictionaries with 'parentCardId' and 'childCardId'
+        card_connections: Dictionary with 'cardIds' and 'connections' structure:
+            - cardIds: list[str] - parent card IDs
+            - connections: dict with 'children' and/or 'parents' lists
 
     Example:
-        connections = [
-            {"parentCardId": "parent1", "childCardId": "child1"},
-            {"parentCardId": "parent1", "childCardId": "child2"},
-        ]
+        connections = {
+            "cardIds": ["parent1", "parent2"],
+            "connections": {
+                "children": ["child1", "child2"]
+            }
+        }
         await delete_connections_bulk(client, connections)
     """
-    await client.post("/card/deleteConnections", json={"connections": connections})
+    await client.delete("/card/connections", json=card_connections)
 
 
 async def connect_to_board(
@@ -339,28 +365,106 @@ async def get_child_boards(client: AgilePlaceClient, card_id: str) -> list[dict]
     Example:
         boards = await get_child_boards(client, "123456")
         for board in boards:
-            print(f"Board: {board['title']}")
+            print(f"Board: {board['boardTitle']}")
     """
-    response = await client.get(f"/card/{card_id}/childBoards")
-    return response.get("boards", [])
+    response = await client.get(f"/card/{card_id}/connection")
+    return response.get("connections", [])
 
 
-async def get_parent_boards(client: AgilePlaceClient, card_id: str) -> list[dict]:
+async def get_parent_boards(
+    client: AgilePlaceClient, 
+    card_id: str,
+    limit: int = 25,
+    offset: int = 0,
+) -> dict:
     """
     Get boards that contain parent cards of the specified card.
 
     Args:
         client: AgilePlace API client
         card_id: ID of the child card
+        limit: Maximum number of boards to return (default: 25)
+        offset: Number of boards to skip (default: 0)
 
     Returns:
-        List of board objects
+        Dictionary with 'boards' list and 'pageMeta'
 
     Example:
-        boards = await get_parent_boards(client, "123456")
-        for board in boards:
-            print(f"Board: {board['title']}")
+        result = await get_parent_boards(client, "123456")
+        for board in result['boards']:
+            print(f"Board: {board['boardTitle']}")
     """
-    response = await client.get(f"/card/{card_id}/parentBoards")
-    return response.get("boards", [])
+    params = {
+        "limit": limit,
+        "offset": offset,
+    }
+    response = await client.get(f"/card/{card_id}/connection/parent-boards", params=params)
+    return response
+
+
+async def create_board_connection(
+    client: AgilePlaceClient,
+    card_id: str,
+    board_id: str,
+) -> dict:
+    """
+    Create a drill-through board connection to another board.
+
+    Args:
+        client: AgilePlace API client
+        card_id: ID of the parent card
+        board_id: ID of the child board to connect to
+
+    Returns:
+        Dictionary with connection details
+
+    Example:
+        connection = await create_board_connection(client, "card123", "board456")
+    """
+    response = await client.put(f"/card/{card_id}/connection/{board_id}")
+    return response
+
+
+async def delete_board_connection(
+    client: AgilePlaceClient,
+    card_id: str,
+    board_id: str,
+) -> dict:
+    """
+    Delete all connections to child cards on the specified board.
+
+    Args:
+        client: AgilePlace API client
+        card_id: ID of the parent card
+        board_id: ID of the child board to disconnect from
+
+    Returns:
+        Dictionary with operation results
+
+    Example:
+        result = await delete_board_connection(client, "card123", "board456")
+    """
+    response = await client.delete(f"/card/{card_id}/connection/{board_id}")
+    return response
+
+
+async def create_same_board_connection(
+    client: AgilePlaceClient,
+    card_id: str,
+) -> dict:
+    """
+    Create a drill-through board connection to the card's current board.
+
+    Args:
+        client: AgilePlace API client
+        card_id: ID of the parent card
+
+    Returns:
+        Dictionary with connection details
+
+    Example:
+        connection = await create_same_board_connection(client, "card123")
+    """
+    response = await client.put(f"/card/{card_id}/connection/same")
+    return response
 
