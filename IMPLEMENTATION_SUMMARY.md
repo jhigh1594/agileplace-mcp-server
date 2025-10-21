@@ -100,7 +100,7 @@ Successfully implemented a comprehensive MCP server for AgilePlace API integrati
 
 ### Environment Variables Required
 ```bash
-AGILEPLACE_DOMAIN=your-subdomain.agileplace.com
+AGILEPLACE_DOMAIN=your-subdomain.leankit.com
 AGILEPLACE_API_TOKEN=your_api_token
 LOG_LEVEL=INFO  # Optional
 ```
@@ -113,7 +113,7 @@ LOG_LEVEL=INFO  # Optional
       "command": "python",
       "args": ["-m", "agileplace_mcp.server"],
       "env": {
-        "AGILEPLACE_DOMAIN": "your-subdomain.agileplace.com",
+        "AGILEPLACE_DOMAIN": "your-subdomain.leankit.com",
         "AGILEPLACE_API_TOKEN": "your_token"
       }
     }

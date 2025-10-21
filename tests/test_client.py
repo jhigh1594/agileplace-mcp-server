@@ -16,7 +16,7 @@ from agileplace_mcp.src.client import (
 @pytest.fixture
 def auth():
     """Create test auth object."""
-    return AgilePlaceAuth(domain="test.agileplace.com", api_token="test_token")
+    return AgilePlaceAuth(domain="test.leankit.com", api_token="test_token")
 
 
 @pytest.fixture

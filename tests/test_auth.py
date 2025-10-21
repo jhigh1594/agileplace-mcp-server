@@ -13,29 +13,29 @@ def test_auth_from_env_vars():
     with patch.dict(
         os.environ,
         {
-            "AGILEPLACE_DOMAIN": "test.agileplace.com",
+            "AGILEPLACE_DOMAIN": "test.leankit.com",
             "AGILEPLACE_API_TOKEN": "test_token_123",
         },
     ):
         auth = AgilePlaceAuth()
-        assert auth.domain == "test.agileplace.com"
+        assert auth.domain == "test.leankit.com"
         assert auth.api_token == "test_token_123"
-        assert auth.base_url == "https://test.agileplace.com/io"
+        assert auth.base_url == "https://test.leankit.com/io"
 
 
 def test_auth_from_parameters():
     """Test authentication with direct parameters."""
-    auth = AgilePlaceAuth(domain="custom.agileplace.com", api_token="custom_token")
-    assert auth.domain == "custom.agileplace.com"
+    auth = AgilePlaceAuth(domain="custom.leankit.com", api_token="custom_token")
+    assert auth.domain == "custom.leankit.com"
     assert auth.api_token == "custom_token"
 
 
 def test_auth_strips_protocol():
     """Test that https:// is stripped from domain."""
     auth = AgilePlaceAuth(
-        domain="https://test.agileplace.com", api_token="test_token"
+        domain="https://test.leankit.com", api_token="test_token"
     )
-    assert auth.domain == "test.agileplace.com"
+    assert auth.domain == "test.leankit.com"
     assert "https://" not in auth.domain
 
 
@@ -48,14 +48,14 @@ def test_auth_missing_domain():
 
 def test_auth_missing_token():
     """Test that missing token raises error."""
-    with patch.dict(os.environ, {"AGILEPLACE_DOMAIN": "test.agileplace.com"}):
+    with patch.dict(os.environ, {"AGILEPLACE_DOMAIN": "test.leankit.com"}):
         with pytest.raises(AgilePlaceAuthError, match="AGILEPLACE_API_TOKEN"):
             AgilePlaceAuth()
 
 
 def test_auth_headers():
     """Test authentication headers are correct."""
-    auth = AgilePlaceAuth(domain="test.agileplace.com", api_token="test_token")
+    auth = AgilePlaceAuth(domain="test.leankit.com", api_token="test_token")
     headers = auth.get_headers()
 
     assert headers["Authorization"] == "Bearer test_token"
@@ -65,6 +65,6 @@ def test_auth_headers():
 
 def test_auth_validate():
     """Test validation of credentials."""
-    auth = AgilePlaceAuth(domain="test.agileplace.com", api_token="test_token")
+    auth = AgilePlaceAuth(domain="test.leankit.com", api_token="test_token")
     assert auth.validate() is True
 

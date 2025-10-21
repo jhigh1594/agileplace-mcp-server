@@ -16,8 +16,8 @@ FastMCP Cloud is a managed hosting platform specifically built for MCP servers. 
 
 1. **GitHub Account** - Sign in to FastMCP Cloud with GitHub
 2. **AgilePlace Credentials**:
-   - Your AgilePlace subdomain (e.g., `yourcompany.agileplace.com`)
-   - API token from: `https://yourcompany.agileplace.com/account/api`
+   - Your AgilePlace domain (e.g., `yourcompany.leankit.com`)
+   - API token from: `https://yourcompany.leankit.com/account/api`
 
 ## Deployment Steps
 
@@ -66,7 +66,7 @@ FastMCP Cloud will prompt you to set environment variables. Add:
 
 | Variable | Value | Example |
 |----------|-------|---------|
-| `AGILEPLACE_DOMAIN` | Your AgilePlace subdomain | `yourcompany.agileplace.com` |
+| `AGILEPLACE_DOMAIN` | Your AgilePlace domain | `yourcompany.leankit.com` |
 | `AGILEPLACE_API_TOKEN` | Your API token | `abc123...` |
 | `LOG_LEVEL` (optional) | Logging level | `INFO` |
 
@@ -225,7 +225,7 @@ Test locally before pushing:
 
 ```bash
 # Set environment variables
-export AGILEPLACE_DOMAIN="yourcompany.agileplace.com"
+export AGILEPLACE_DOMAIN="yourcompany.leankit.com"
 export AGILEPLACE_API_TOKEN="your_token"
 
 # Run the server

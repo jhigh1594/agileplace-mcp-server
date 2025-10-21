@@ -60,7 +60,7 @@ A comprehensive Model Context Protocol (MCP) server for the AgilePlace API, buil
 
 - Python 3.10 or higher
 - AgilePlace account with API access
-- API token (create at: `https://your-subdomain.agileplace.com/account/api`)
+- API token (create at: `https://your-subdomain.leankit.com/account/api`)
 
 ### Deployment Options
 
@@ -98,7 +98,7 @@ pip install -e ".[dev]"
 ### For FastMCP Cloud
 
 Set environment variables in your FastMCP Cloud project settings:
-- `AGILEPLACE_DOMAIN` - Your AgilePlace subdomain (e.g., `yourcompany.agileplace.com`)
+- `AGILEPLACE_DOMAIN` - Your AgilePlace domain (e.g., `yourcompany.leankit.com`)
 - `AGILEPLACE_API_TOKEN` - Your API token
 
 Then connect using just the URL in your Claude Desktop config:
@@ -119,8 +119,8 @@ Then connect using just the URL in your Claude Desktop config:
 Create a `.env` file in your project directory or set environment variables:
 
 ```bash
-# Your AgilePlace subdomain (e.g., mycompany.agileplace.com)
-AGILEPLACE_DOMAIN=your-subdomain.agileplace.com
+# Your AgilePlace domain (e.g., mycompany.leankit.com)
+AGILEPLACE_DOMAIN=your-subdomain.leankit.com
 
 # Your AgilePlace API token
 AGILEPLACE_API_TOKEN=your_token_here
@@ -145,7 +145,7 @@ Add to your Claude Desktop configuration file:
       "command": "python",
       "args": ["-m", "agileplace_mcp.server"],
       "env": {
-        "AGILEPLACE_DOMAIN": "your-subdomain.agileplace.com",
+        "AGILEPLACE_DOMAIN": "your-subdomain.leankit.com",
         "AGILEPLACE_API_TOKEN": "your_token_here"
       }
     }

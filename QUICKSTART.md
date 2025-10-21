@@ -20,7 +20,7 @@ Get up and running with the AgilePlace MCP Server in 5 minutes!
 ### Step 1: Get Your AgilePlace API Token
 
 1. Log in to your AgilePlace account
-2. Navigate to: `https://your-subdomain.agileplace.com/account/api`
+2. Navigate to: `https://your-subdomain.leankit.com/account/api`
 3. Click "Create Token"
 4. Give it a description (e.g., "MCP Server")
 5. Copy the generated token
@@ -35,7 +35,7 @@ Get up and running with the AgilePlace MCP Server in 5 minutes!
    - **Name**: `agileplace` (or your choice)
    - **Entrypoint**: `src/server.py:mcp`
    - **Environment Variables**:
-     - `AGILEPLACE_DOMAIN`: `your-subdomain.agileplace.com`
+     - `AGILEPLACE_DOMAIN`: `your-subdomain.leankit.com`
      - `AGILEPLACE_API_TOKEN`: *paste your token*
 6. Click **Create Project**
 
@@ -67,7 +67,7 @@ Your server will be live at: `https://your-project-name.fastmcp.app/mcp`
 ### Step 1: Get Your AgilePlace API Token
 
 1. Log in to your AgilePlace account
-2. Navigate to: `https://your-subdomain.agileplace.com/account/api`
+2. Navigate to: `https://your-subdomain.leankit.com/account/api`
 3. Click "Create Token"
 4. Give it a description (e.g., "MCP Server")
 5. Copy the generated token
@@ -98,7 +98,7 @@ pip install -e .
       "command": "python",
       "args": ["-m", "agileplace_mcp.server"],
       "env": {
-        "AGILEPLACE_DOMAIN": "your-subdomain.agileplace.com",
+        "AGILEPLACE_DOMAIN": "your-subdomain.leankit.com",
         "AGILEPLACE_API_TOKEN": "paste_your_token_here"
       }
     }
@@ -106,7 +106,7 @@ pip install -e .
 }
 ```
 
-3. Replace `your-subdomain` with your actual AgilePlace subdomain
+3. Replace `your-subdomain` with your actual AgilePlace domain
 4. Replace `paste_your_token_here` with your API token from Step 1
 5. Save the file
 

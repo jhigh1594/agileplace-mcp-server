@@ -4,7 +4,7 @@
       "command": "python",
       "args": ["-m", "agileplace_mcp.server"],
       "env": {
-        "AGILEPLACE_DOMAIN": "your-subdomain.agileplace.com",
+        "AGILEPLACE_DOMAIN": "your-subdomain.leankit.com",
         "AGILEPLACE_API_TOKEN": "your_token_here",
         "LOG_LEVEL": "INFO"
       }

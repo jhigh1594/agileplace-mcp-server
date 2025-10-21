@@ -22,7 +22,7 @@ class AgilePlaceAuth:
         Initialize authentication handler.
 
         Args:
-            domain: AgilePlace domain (e.g., 'mycompany.agileplace.com').
+            domain: AgilePlace domain (e.g., 'mycompany.leankit.com').
                    If None, reads from AGILEPLACE_DOMAIN environment variable.
             api_token: API token for authentication.
                       If None, reads from AGILEPLACE_API_TOKEN environment variable.
@@ -36,7 +36,7 @@ class AgilePlaceAuth:
         if not self.domain:
             raise AgilePlaceAuthError(
                 "AGILEPLACE_DOMAIN environment variable is required. "
-                "Set it to your AgilePlace subdomain (e.g., 'mycompany.agileplace.com')"
+                "Set it to your AgilePlace domain (e.g., 'mycompany.leankit.com')"
             )
 
         if not self.api_token:

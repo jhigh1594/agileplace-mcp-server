@@ -27,7 +27,7 @@ Set these in your FastMCP Cloud project:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `AGILEPLACE_DOMAIN` | Your AgilePlace subdomain | `yourcompany.agileplace.com` |
+| `AGILEPLACE_DOMAIN` | Your AgilePlace domain | `yourcompany.leankit.com` |
 | `AGILEPLACE_API_TOKEN` | API token from AgilePlace | `abc123...` |
 
 ## Optional Environment Variables
@@ -40,7 +40,7 @@ Set these in your FastMCP Cloud project:
 
 ### 1. Get AgilePlace API Token
 - [ ] Log in to AgilePlace
-- [ ] Navigate to: `https://your-subdomain.agileplace.com/account/api`
+- [ ] Navigate to: `https://your-subdomain.leankit.com/account/api`
 - [ ] Create new API token
 - [ ] Copy token to secure location
 
