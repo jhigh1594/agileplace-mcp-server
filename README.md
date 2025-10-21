@@ -62,7 +62,24 @@ A comprehensive Model Context Protocol (MCP) server for the AgilePlace API, buil
 - AgilePlace account with API access
 - API token (create at: `https://your-subdomain.agileplace.com/account/api`)
 
-### Install from Source
+### Deployment Options
+
+#### Option 1: FastMCP Cloud (Recommended) ⚡
+
+Deploy in seconds with zero configuration:
+
+1. Visit [fastmcp.cloud](https://fastmcp.cloud) and sign in with GitHub
+2. Create a project from `jhigh1594/agileplace-mcp-server`
+3. Configure:
+   - **Entrypoint**: `src/server.py:mcp`
+   - **Environment Variables**: `AGILEPLACE_DOMAIN`, `AGILEPLACE_API_TOKEN`
+4. Your server is live at `https://your-project-name.fastmcp.app/mcp`
+
+**Benefits**: Automatic updates, PR previews, built-in auth, free during beta!
+
+👉 See detailed guide: [DEPLOY_FASTMCP_CLOUD.md](DEPLOY_FASTMCP_CLOUD.md)
+
+#### Option 2: Install from Source
 
 ```bash
 # Clone the repository
@@ -78,7 +95,26 @@ pip install -e ".[dev]"
 
 ## Configuration
 
-### Environment Variables
+### For FastMCP Cloud
+
+Set environment variables in your FastMCP Cloud project settings:
+- `AGILEPLACE_DOMAIN` - Your AgilePlace subdomain (e.g., `yourcompany.agileplace.com`)
+- `AGILEPLACE_API_TOKEN` - Your API token
+
+Then connect using just the URL in your Claude Desktop config:
+```json
+{
+  "mcpServers": {
+    "agileplace": {
+      "url": "https://your-project-name.fastmcp.app/mcp"
+    }
+  }
+}
+```
+
+### For Local Installation
+
+#### Environment Variables
 
 Create a `.env` file in your project directory or set environment variables:
 
@@ -93,13 +129,13 @@ AGILEPLACE_API_TOKEN=your_token_here
 LOG_LEVEL=INFO
 ```
 
-### MCP Client Configuration
+#### MCP Client Configuration
 
-#### Claude Desktop
+**Claude Desktop**
 
 Add to your Claude Desktop configuration file:
 
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
 **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
@@ -258,6 +294,26 @@ When using with Claude or other AI assistants, you can ask natural language ques
 - "What are the children of card 789?"
 - "Create a dependency where card 456 depends on card 123 finishing"
 - "Update all cards with tag 'urgent' to high priority"
+
+## Deployment
+
+### FastMCP Cloud (Recommended)
+
+For the easiest deployment experience:
+- **No server management** - We handle hosting, scaling, and updates
+- **Automatic updates** - Pushes to main branch auto-deploy
+- **PR previews** - Test changes before merging
+- **Free during beta** - No cost while in beta
+
+See [DEPLOY_FASTMCP_CLOUD.md](DEPLOY_FASTMCP_CLOUD.md) for step-by-step instructions.
+
+### Self-Hosted Options
+
+You can also deploy to:
+- AWS Lambda with function URL
+- Google Cloud Functions
+- Any Python hosting service
+- Your own server with `python -m agileplace_mcp.server`
 
 ## Development
 

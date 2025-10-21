@@ -2,13 +2,22 @@
 
 Get up and running with the AgilePlace MCP Server in 5 minutes!
 
+## Two Ways to Get Started
+
+1. **FastMCP Cloud** (Recommended) - Deploy in seconds, zero config
+2. **Local Installation** - Run on your own machine
+
 ## Prerequisites
 
 - Python 3.10 or higher
 - AgilePlace account with API access
 - Claude Desktop (or another MCP-compatible client)
 
-## Step 1: Get Your AgilePlace API Token
+---
+
+## Option 1: FastMCP Cloud (Fastest) ⚡
+
+### Step 1: Get Your AgilePlace API Token
 
 1. Log in to your AgilePlace account
 2. Navigate to: `https://your-subdomain.agileplace.com/account/api`
@@ -16,17 +25,65 @@ Get up and running with the AgilePlace MCP Server in 5 minutes!
 4. Give it a description (e.g., "MCP Server")
 5. Copy the generated token
 
-## Step 2: Install the MCP Server
+### Step 2: Deploy to FastMCP Cloud
+
+1. Visit [fastmcp.cloud](https://fastmcp.cloud)
+2. Sign in with GitHub
+3. Click **Create Project**
+4. Select repository: `jhigh1594/agileplace-mcp-server`
+5. Configure:
+   - **Name**: `agileplace` (or your choice)
+   - **Entrypoint**: `src/server.py:mcp`
+   - **Environment Variables**:
+     - `AGILEPLACE_DOMAIN`: `your-subdomain.agileplace.com`
+     - `AGILEPLACE_API_TOKEN`: *paste your token*
+6. Click **Create Project**
+
+Your server will be live at: `https://your-project-name.fastmcp.app/mcp`
+
+### Step 3: Configure Claude Desktop
+
+1. Open `claude_desktop_config.json`
+2. Add:
+
+```json
+{
+  "mcpServers": {
+    "agileplace": {
+      "url": "https://your-project-name.fastmcp.app/mcp"
+    }
+  }
+}
+```
+
+3. Save and restart Claude Desktop
+
+**Done!** Skip to [Step 5: Verify It's Working](#step-5-verify-its-working)
+
+---
+
+## Option 2: Local Installation
+
+### Step 1: Get Your AgilePlace API Token
+
+1. Log in to your AgilePlace account
+2. Navigate to: `https://your-subdomain.agileplace.com/account/api`
+3. Click "Create Token"
+4. Give it a description (e.g., "MCP Server")
+5. Copy the generated token
+
+### Step 2: Install the MCP Server
 
 ```bash
-# Navigate to the project directory
-cd /Users/jhigh/AgilePlace_MCP/agileplace_mcp
+# Clone the repository
+git clone https://github.com/jhigh1594/agileplace-mcp-server.git
+cd agileplace-mcp-server
 
 # Install the package
 pip install -e .
 ```
 
-## Step 3: Configure Claude Desktop
+### Step 3: Configure Claude Desktop
 
 1. Open your Claude Desktop configuration file:
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -53,9 +110,11 @@ pip install -e .
 4. Replace `paste_your_token_here` with your API token from Step 1
 5. Save the file
 
-## Step 4: Restart Claude Desktop
+### Step 4: Restart Claude Desktop
 
 Close and reopen Claude Desktop to load the new MCP server.
+
+---
 
 ## Step 5: Verify It's Working
 
