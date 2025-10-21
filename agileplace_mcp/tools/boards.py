@@ -2,8 +2,8 @@
 
 from typing import Optional
 
-from ..client import AgilePlaceClient
-from ..models import Board, Card
+from agileplace_mcp.client import AgilePlaceClient
+from agileplace_mcp.models import Board, Card
 
 
 async def list_boards(

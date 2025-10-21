@@ -7,7 +7,7 @@ from typing import Any, Optional
 
 import httpx
 
-from .auth import AgilePlaceAuth
+from agileplace_mcp.auth import AgilePlaceAuth
 
 logger = logging.getLogger(__name__)
 

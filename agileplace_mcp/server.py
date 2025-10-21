@@ -6,9 +6,9 @@ from typing import Any, Optional
 
 from fastmcp import FastMCP
 
-from .auth import AgilePlaceAuth, AgilePlaceAuthError
-from .client import AgilePlaceAPIError, AgilePlaceClient, RateLimitError
-from .tools import boards, bulk, cards, connections, dependencies, query
+from agileplace_mcp.auth import AgilePlaceAuth, AgilePlaceAuthError
+from agileplace_mcp.client import AgilePlaceAPIError, AgilePlaceClient, RateLimitError
+from agileplace_mcp.tools import boards, bulk, cards, connections, dependencies, query
 
 # Set up logging
 logging.basicConfig(

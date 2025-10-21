@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 
-from ..client import AgilePlaceClient
+from agileplace_mcp.client import AgilePlaceClient
 
 
 async def update_cards_bulk(

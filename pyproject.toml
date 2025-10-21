@@ -44,7 +44,7 @@ dev = [
 agileplace-mcp = "agileplace_mcp.server:main"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 
 [tool.setuptools.package-data]
 agileplace_mcp = ["py.typed"]

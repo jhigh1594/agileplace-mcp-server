@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from ..client import AgilePlaceClient
+from agileplace_mcp.client import AgilePlaceClient
 
 
 async def get_card_dependencies(client: AgilePlaceClient, card_id: str) -> list[dict]:
