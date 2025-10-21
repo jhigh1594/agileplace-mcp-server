@@ -1,6 +1,11 @@
 # AgilePlace MCP Server
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+
 A comprehensive Model Context Protocol (MCP) server for the AgilePlace API, built with FastMCP. This server enables AI assistants like Claude to interact with AgilePlace for project management tasks.
+
+🔗 **[GitHub Repository](https://github.com/jhigh1594/agileplace-mcp-server)**
 
 ## Features
 
@@ -61,8 +66,8 @@ A comprehensive Model Context Protocol (MCP) server for the AgilePlace API, buil
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd agileplace_mcp
+git clone https://github.com/jhigh1594/agileplace-mcp-server.git
+cd agileplace-mcp-server
 
 # Install dependencies
 pip install -e .
@@ -356,7 +361,7 @@ MIT License - see LICENSE file for details
 ## Support
 
 For issues and questions:
-- GitHub Issues: [repository-url]/issues
+- GitHub Issues: https://github.com/jhigh1594/agileplace-mcp-server/issues
 - AgilePlace Support: https://success.planview.com/
 
 ## Changelog
